@@ -1,4 +1,3 @@
-```python
 import os
 import time
 import json
@@ -30,8 +29,8 @@ class ProductInfo(BaseModel):
 def validate_and_retry_llm_output(
     prompt: str,
     schema_model: Type[T],
-    max_retries: int = 3,
-    initial_delay: float = 1.0
+    max_retries: int = settings.default_max_retries,  # Use setting for default
+    initial_delay: float = settings.default_initial_delay # Use setting for default
 ) -> T:
     """
     Calls the LLM, attempts to parse and validate its output against a Pydantic schema,
@@ -103,7 +102,9 @@ if __name__ == "__main__":
         validated_product = validate_and_retry_llm_output(
             prompt=product_prompt,
             schema_model=ProductInfo,
-            max_retries=5
+            # max_retries and initial_delay now default to values from settings
+            # but can still be overridden here if needed.
+            max_retries=5 # Example: override default for this specific call
         )
         print("\n--- Final Validated Product Info ---")
         print(validated_product.model_dump_json(indent=2))
@@ -112,5 +113,3 @@ if __name__ == "__main__":
         print(f"Application error: {e}")
     except Exception as e:
         print(f"An unhandled error occurred: {e}")
-
-```
