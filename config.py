@@ -1,6 +1,5 @@
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
-import threading
 
 class Settings(BaseSettings):
     """
@@ -15,8 +14,6 @@ class Settings(BaseSettings):
     default_max_retries: int = 3
     # New: Add a default initial delay for the retry mechanism
     default_initial_delay: float = 1.0
-    # New: Add a flag to enable or disable multithreading for validation and retry
-    enable_multithreading: bool = True
 
     model_config = SettingsConfigDict(
         env_file='.env',         # Load variables from .env file
